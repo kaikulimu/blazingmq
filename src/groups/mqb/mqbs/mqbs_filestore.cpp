@@ -275,6 +275,11 @@ void FileStore::cancelUnreceipted(const DataStoreRecordKey& recordKey)
 
 int FileStore::openInNonRecoveryMode()
 {
+    // executed by the *DISPATCHER* thread
+
+    // PRECONDITIONS
+    BSLS_ASSERT_SAFE(inDispatcherThread());
+
     FileSetSp fileSetSp;
     int       rc = create(&fileSetSp);
     if (0 == rc) {
@@ -288,6 +293,11 @@ int FileStore::openInNonRecoveryMode()
 int FileStore::openInRecoveryMode(bsl::ostream&          errorDescription,
                                   const QueueKeyInfoMap& queueKeyInfoMap)
 {
+    // executed by the *DISPATCHER* thread
+
+    // PRECONDITIONS
+    BSLS_ASSERT_SAFE(inDispatcherThread());
+
     enum {
         rc_NO_FILES_TO_RECOVER = 1  // Reserved rc
         ,
@@ -5180,6 +5190,11 @@ FileStore::~FileStore()
 // MANIPULATORS
 int FileStore::open(const QueueKeyInfoMap& queueKeyInfoMap)
 {
+    // executed by the *DISPATCHER* thread
+
+    // PRECONDITIONS
+    BSLS_ASSERT_SAFE(inDispatcherThread());
+
     enum {
         rc_SUCCESS                   = 0,
         rc_NON_RECOVERY_MODE_FAILURE = -1,
@@ -6223,6 +6238,10 @@ void FileStore::processStorageEvent(const bsl::shared_ptr<bdlbb::Blob>& blob,
 
 int FileStore::processRecoveryEvent(const bsl::shared_ptr<bdlbb::Blob>& blob)
 {
+    // executed by the *DISPATCHER* thread
+
+    // PRECONDITIONS
+    BSLS_ASSERT_SAFE(inDispatcherThread());
     BSLS_ASSERT_SAFE(blob);
 
     enum {
@@ -6519,7 +6538,10 @@ int FileStore::issueSyncPoint()
 void FileStore::setPrimary(mqbnet::ClusterNode* primaryNode,
                            unsigned int         primaryLeaseId)
 {
+    // executed by the *DISPATCHER* thread
+
     // PRECONDITIONS
+    BSLS_ASSERT_SAFE(inDispatcherThread());
     BSLS_ASSERT_SAFE(0 < primaryLeaseId);
     BSLS_ASSERT_SAFE(0 != primaryNode);
 
@@ -7208,6 +7230,9 @@ void FileStore::getStorages(StorageList*          storages,
 
 void FileStore::loadSummary(mqbcmd::FileStore* fileStore) const
 {
+    // executed by *QUEUE_DISPATCHER* thread with the specified `fileStore`'s
+    // partitionId
+
     // PRECONDITIONS
     BSLS_ASSERT_SAFE(fileStore);
 

@@ -42,7 +42,6 @@
 
 // BDE
 #include <ball_log.h>
-#include <bdlbb_blob.h>
 #include <bsl_functional.h>
 #include <bsl_memory.h>
 #include <bsl_ostream.h>
@@ -426,9 +425,6 @@ class StorageManager : public mqbi::AppKeyGenerator {
     /// dispatcher thread.
     virtual bool isStorageEmpty(const bmqt::Uri& uri,
                                 int              partitionId) const = 0;
-
-    /// Return the blob buffer factory to use.
-    virtual bdlbb::BlobBufferFactory* blobBufferFactory() const = 0;
 
     /// Return partition corresponding to the specified `partitionId`.  The
     /// behavior is undefined if `partitionId` does not represent a valid
