@@ -1,4 +1,4 @@
-// Copyright 2024 Bloomberg Finance L.P.
+// Copyright 2025 Bloomberg Finance L.P.
 // SPDX-License-Identifier: Apache-2.0
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -927,13 +927,11 @@ LogDumpConfig::LogDumpConfig(const LogDumpConfig& original,
                              bslma::Allocator*    basicAllocator)
 : d_recordingLevel(original.d_recordingLevel, basicAllocator)
 , d_triggerLevel(original.d_triggerLevel, basicAllocator)
-, d_recordBufferSize(original.d_recordBufferSize)
-{
-}
+, d_recordBufferSize(original.d_recordBufferSize){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-LogDumpConfig::LogDumpConfig(LogDumpConfig&& original) noexcept
+LogDumpConfig::LogDumpConfig(LogDumpConfig && original) noexcept
 : d_recordingLevel(bsl::move(original.d_recordingLevel)),
   d_triggerLevel(bsl::move(original.d_triggerLevel)),
   d_recordBufferSize(bsl::move(original.d_recordBufferSize))
@@ -1337,13 +1335,11 @@ Plugins::Plugins(bslma::Allocator* basicAllocator)
 
 Plugins::Plugins(const Plugins& original, bslma::Allocator* basicAllocator)
 : d_libraries(original.d_libraries, basicAllocator)
-, d_enabled(original.d_enabled, basicAllocator)
-{
-}
+, d_enabled(original.d_enabled, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-Plugins::Plugins(Plugins&& original) noexcept
+Plugins::Plugins(Plugins && original) noexcept
 : d_libraries(bsl::move(original.d_libraries)),
   d_enabled(bsl::move(original.d_enabled))
 {
@@ -1680,13 +1676,11 @@ ResolvedDomain::ResolvedDomain(bslma::Allocator* basicAllocator)
 ResolvedDomain::ResolvedDomain(const ResolvedDomain& original,
                                bslma::Allocator*     basicAllocator)
 : d_resolvedName(original.d_resolvedName, basicAllocator)
-, d_clusterName(original.d_clusterName, basicAllocator)
-{
-}
+, d_clusterName(original.d_clusterName, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-ResolvedDomain::ResolvedDomain(ResolvedDomain&& original) noexcept
+ResolvedDomain::ResolvedDomain(ResolvedDomain && original) noexcept
 : d_resolvedName(bsl::move(original.d_resolvedName)),
   d_clusterName(bsl::move(original.d_clusterName))
 {
@@ -1841,13 +1835,11 @@ StatsPrinterConfig::StatsPrinterConfig(const StatsPrinterConfig& original,
 , d_printInterval(original.d_printInterval)
 , d_maxAgeDays(original.d_maxAgeDays)
 , d_rotateBytes(original.d_rotateBytes)
-, d_rotateDays(original.d_rotateDays)
-{
-}
+, d_rotateDays(original.d_rotateDays){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-StatsPrinterConfig::StatsPrinterConfig(StatsPrinterConfig&& original) noexcept
+StatsPrinterConfig::StatsPrinterConfig(StatsPrinterConfig && original) noexcept
 : d_file(bsl::move(original.d_file)),
   d_printInterval(bsl::move(original.d_printInterval)),
   d_maxAgeDays(bsl::move(original.d_maxAgeDays)),
@@ -2208,13 +2200,11 @@ SyslogConfig::SyslogConfig(const SyslogConfig& original,
 : d_appName(original.d_appName, basicAllocator)
 , d_logFormat(original.d_logFormat, basicAllocator)
 , d_verbosity(original.d_verbosity, basicAllocator)
-, d_enabled(original.d_enabled)
-{
-}
+, d_enabled(original.d_enabled){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-SyslogConfig::SyslogConfig(SyslogConfig&& original) noexcept
+SyslogConfig::SyslogConfig(SyslogConfig && original) noexcept
 : d_appName(bsl::move(original.d_appName)),
   d_logFormat(bsl::move(original.d_logFormat)),
   d_verbosity(bsl::move(original.d_verbosity)),
@@ -2342,14 +2332,12 @@ TcpClusterNodeConnection::TcpClusterNodeConnection(
 TcpClusterNodeConnection::TcpClusterNodeConnection(
     const TcpClusterNodeConnection& original,
     bslma::Allocator*               basicAllocator)
-: d_endpoint(original.d_endpoint, basicAllocator)
-{
-}
+: d_endpoint(original.d_endpoint, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-TcpClusterNodeConnection::TcpClusterNodeConnection(
-    TcpClusterNodeConnection&& original) noexcept
+TcpClusterNodeConnection::TcpClusterNodeConnection(TcpClusterNodeConnection &&
+                                                   original) noexcept
 : d_endpoint(bsl::move(original.d_endpoint))
 {
 }
@@ -2468,15 +2456,14 @@ TcpInterfaceListener::TcpInterfaceListener(
     const TcpInterfaceListener& original,
     bslma::Allocator*           basicAllocator)
 : d_name(original.d_name, basicAllocator)
-, d_port(original.d_port)
-{
-}
+, d_port(original.d_port){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-TcpInterfaceListener::TcpInterfaceListener(TcpInterfaceListener&& original)
-    noexcept : d_name(bsl::move(original.d_name)),
-               d_port(bsl::move(original.d_port))
+TcpInterfaceListener::TcpInterfaceListener(TcpInterfaceListener &&
+                                           original) noexcept
+: d_name(bsl::move(original.d_name)),
+  d_port(bsl::move(original.d_port))
 {
 }
 
@@ -2603,14 +2590,12 @@ VirtualClusterInformation::VirtualClusterInformation(
     const VirtualClusterInformation& original,
     bslma::Allocator*                basicAllocator)
 : d_name(original.d_name, basicAllocator)
-, d_selfNodeId(original.d_selfNodeId)
-{
-}
+, d_selfNodeId(original.d_selfNodeId){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
 VirtualClusterInformation::VirtualClusterInformation(
-    VirtualClusterInformation&& original) noexcept
+    VirtualClusterInformation && original) noexcept
 : d_name(bsl::move(original.d_name)),
   d_selfNodeId(bsl::move(original.d_selfNodeId))
 {
@@ -3150,13 +3135,11 @@ LogController::LogController(const LogController& original,
 , d_syslog(original.d_syslog, basicAllocator)
 , d_logDump(original.d_logDump, basicAllocator)
 , d_fileMaxAgeDays(original.d_fileMaxAgeDays)
-, d_rotationBytes(original.d_rotationBytes)
-{
-}
+, d_rotationBytes(original.d_rotationBytes){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-LogController::LogController(LogController&& original) noexcept
+LogController::LogController(LogController && original) noexcept
 : d_categories(bsl::move(original.d_categories)),
   d_fileName(bsl::move(original.d_fileName)),
   d_logfileFormat(bsl::move(original.d_logfileFormat)),
@@ -3285,6 +3268,9 @@ LogController::print(bsl::ostream& stream, int level, int spacesPerLevel) const
 
 const char PartitionConfig::CLASS_NAME[] = "PartitionConfig";
 
+const bsls::Types::Uint64
+    PartitionConfig::DEFAULT_INITIALIZER_MAX_C_S_L_FILE_SIZE = 67108864;
+
 const bool PartitionConfig::DEFAULT_INITIALIZER_PREALLOCATE = false;
 
 const bool PartitionConfig::DEFAULT_INITIALIZER_PREFAULT_PAGES = false;
@@ -3322,6 +3308,11 @@ const bdlat_AttributeInfo PartitionConfig::ATTRIBUTE_INFO_ARRAY[] = {
      sizeof("maxQlistFileSize") - 1,
      "",
      bdlat_FormattingMode::e_DEC},
+    {ATTRIBUTE_ID_MAX_C_S_L_FILE_SIZE,
+     "maxCSLFileSize",
+     sizeof("maxCSLFileSize") - 1,
+     "",
+     bdlat_FormattingMode::e_DEC},
     {ATTRIBUTE_ID_PREALLOCATE,
      "preallocate",
      sizeof("preallocate") - 1,
@@ -3353,7 +3344,7 @@ const bdlat_AttributeInfo PartitionConfig::ATTRIBUTE_INFO_ARRAY[] = {
 const bdlat_AttributeInfo*
 PartitionConfig::lookupAttributeInfo(const char* name, int nameLength)
 {
-    for (int i = 0; i < 11; ++i) {
+    for (int i = 0; i < 12; ++i) {
         const bdlat_AttributeInfo& attributeInfo =
             PartitionConfig::ATTRIBUTE_INFO_ARRAY[i];
 
@@ -3381,6 +3372,8 @@ const bdlat_AttributeInfo* PartitionConfig::lookupAttributeInfo(int id)
         return &ATTRIBUTE_INFO_ARRAY[ATTRIBUTE_INDEX_MAX_JOURNAL_FILE_SIZE];
     case ATTRIBUTE_ID_MAX_QLIST_FILE_SIZE:
         return &ATTRIBUTE_INFO_ARRAY[ATTRIBUTE_INDEX_MAX_QLIST_FILE_SIZE];
+    case ATTRIBUTE_ID_MAX_C_S_L_FILE_SIZE:
+        return &ATTRIBUTE_INFO_ARRAY[ATTRIBUTE_INDEX_MAX_C_S_L_FILE_SIZE];
     case ATTRIBUTE_ID_PREALLOCATE:
         return &ATTRIBUTE_INFO_ARRAY[ATTRIBUTE_INDEX_PREALLOCATE];
     case ATTRIBUTE_ID_MAX_ARCHIVED_FILE_SETS:
@@ -3401,6 +3394,7 @@ PartitionConfig::PartitionConfig(bslma::Allocator* basicAllocator)
 : d_maxDataFileSize()
 , d_maxJournalFileSize()
 , d_maxQlistFileSize()
+, d_maxCSLFileSize(DEFAULT_INITIALIZER_MAX_C_S_L_FILE_SIZE)
 , d_location(basicAllocator)
 , d_archiveLocation(basicAllocator)
 , d_syncConfig()
@@ -3417,6 +3411,7 @@ PartitionConfig::PartitionConfig(const PartitionConfig& original,
 : d_maxDataFileSize(original.d_maxDataFileSize)
 , d_maxJournalFileSize(original.d_maxJournalFileSize)
 , d_maxQlistFileSize(original.d_maxQlistFileSize)
+, d_maxCSLFileSize(original.d_maxCSLFileSize)
 , d_location(original.d_location, basicAllocator)
 , d_archiveLocation(original.d_archiveLocation, basicAllocator)
 , d_syncConfig(original.d_syncConfig)
@@ -3424,16 +3419,15 @@ PartitionConfig::PartitionConfig(const PartitionConfig& original,
 , d_maxArchivedFileSets(original.d_maxArchivedFileSets)
 , d_preallocate(original.d_preallocate)
 , d_prefaultPages(original.d_prefaultPages)
-, d_flushAtShutdown(original.d_flushAtShutdown)
-{
-}
+, d_flushAtShutdown(original.d_flushAtShutdown){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-PartitionConfig::PartitionConfig(PartitionConfig&& original) noexcept
+PartitionConfig::PartitionConfig(PartitionConfig && original) noexcept
 : d_maxDataFileSize(bsl::move(original.d_maxDataFileSize)),
   d_maxJournalFileSize(bsl::move(original.d_maxJournalFileSize)),
   d_maxQlistFileSize(bsl::move(original.d_maxQlistFileSize)),
+  d_maxCSLFileSize(bsl::move(original.d_maxCSLFileSize)),
   d_location(bsl::move(original.d_location)),
   d_archiveLocation(bsl::move(original.d_archiveLocation)),
   d_syncConfig(bsl::move(original.d_syncConfig)),
@@ -3450,6 +3444,7 @@ PartitionConfig::PartitionConfig(PartitionConfig&& original,
 : d_maxDataFileSize(bsl::move(original.d_maxDataFileSize))
 , d_maxJournalFileSize(bsl::move(original.d_maxJournalFileSize))
 , d_maxQlistFileSize(bsl::move(original.d_maxQlistFileSize))
+, d_maxCSLFileSize(bsl::move(original.d_maxCSLFileSize))
 , d_location(bsl::move(original.d_location), basicAllocator)
 , d_archiveLocation(bsl::move(original.d_archiveLocation), basicAllocator)
 , d_syncConfig(bsl::move(original.d_syncConfig))
@@ -3477,6 +3472,7 @@ PartitionConfig& PartitionConfig::operator=(const PartitionConfig& rhs)
         d_maxDataFileSize     = rhs.d_maxDataFileSize;
         d_maxJournalFileSize  = rhs.d_maxJournalFileSize;
         d_maxQlistFileSize    = rhs.d_maxQlistFileSize;
+        d_maxCSLFileSize      = rhs.d_maxCSLFileSize;
         d_preallocate         = rhs.d_preallocate;
         d_maxArchivedFileSets = rhs.d_maxArchivedFileSets;
         d_prefaultPages       = rhs.d_prefaultPages;
@@ -3498,6 +3494,7 @@ PartitionConfig& PartitionConfig::operator=(PartitionConfig&& rhs)
         d_maxDataFileSize     = bsl::move(rhs.d_maxDataFileSize);
         d_maxJournalFileSize  = bsl::move(rhs.d_maxJournalFileSize);
         d_maxQlistFileSize    = bsl::move(rhs.d_maxQlistFileSize);
+        d_maxCSLFileSize      = bsl::move(rhs.d_maxCSLFileSize);
         d_preallocate         = bsl::move(rhs.d_preallocate);
         d_maxArchivedFileSets = bsl::move(rhs.d_maxArchivedFileSets);
         d_prefaultPages       = bsl::move(rhs.d_prefaultPages);
@@ -3517,6 +3514,7 @@ void PartitionConfig::reset()
     bdlat_ValueTypeFunctions::reset(&d_maxDataFileSize);
     bdlat_ValueTypeFunctions::reset(&d_maxJournalFileSize);
     bdlat_ValueTypeFunctions::reset(&d_maxQlistFileSize);
+    d_maxCSLFileSize = DEFAULT_INITIALIZER_MAX_C_S_L_FILE_SIZE;
     d_preallocate = DEFAULT_INITIALIZER_PREALLOCATE;
     bdlat_ValueTypeFunctions::reset(&d_maxArchivedFileSets);
     d_prefaultPages   = DEFAULT_INITIALIZER_PREFAULT_PAGES;
@@ -3538,6 +3536,7 @@ bsl::ostream& PartitionConfig::print(bsl::ostream& stream,
     printer.printAttribute("maxDataFileSize", this->maxDataFileSize());
     printer.printAttribute("maxJournalFileSize", this->maxJournalFileSize());
     printer.printAttribute("maxQlistFileSize", this->maxQlistFileSize());
+    printer.printAttribute("maxCSLFileSize", this->maxCSLFileSize());
     printer.printAttribute("preallocate", this->preallocate());
     printer.printAttribute("maxArchivedFileSets", this->maxArchivedFileSets());
     printer.printAttribute("prefaultPages", this->prefaultPages());
@@ -3626,14 +3625,12 @@ StatPluginConfigPrometheus::StatPluginConfigPrometheus(
     bslma::Allocator*                 basicAllocator)
 : d_host(original.d_host, basicAllocator)
 , d_port(original.d_port)
-, d_mode(original.d_mode)
-{
-}
+, d_mode(original.d_mode){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
 StatPluginConfigPrometheus::StatPluginConfigPrometheus(
-    StatPluginConfigPrometheus&& original) noexcept
+    StatPluginConfigPrometheus && original) noexcept
 : d_host(bsl::move(original.d_host)),
   d_port(bsl::move(original.d_port)),
   d_mode(bsl::move(original.d_mode))
@@ -3845,13 +3842,11 @@ TcpInterfaceConfig::TcpInterfaceConfig(const TcpInterfaceConfig& original,
 , d_port(original.d_port)
 , d_ioThreads(original.d_ioThreads)
 , d_maxConnections(original.d_maxConnections)
-, d_heartbeatIntervalMs(original.d_heartbeatIntervalMs)
-{
-}
+, d_heartbeatIntervalMs(original.d_heartbeatIntervalMs){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-TcpInterfaceConfig::TcpInterfaceConfig(TcpInterfaceConfig&& original) noexcept
+TcpInterfaceConfig::TcpInterfaceConfig(TcpInterfaceConfig && original) noexcept
 : d_lowWatermark(bsl::move(original.d_lowWatermark)),
   d_highWatermark(bsl::move(original.d_highWatermark)),
   d_nodeLowWatermark(bsl::move(original.d_nodeLowWatermark)),
@@ -4035,13 +4030,11 @@ ClusterNode::ClusterNode(const ClusterNode& original,
 : d_name(original.d_name, basicAllocator)
 , d_dataCenter(original.d_dataCenter, basicAllocator)
 , d_transport(original.d_transport, basicAllocator)
-, d_id(original.d_id)
-{
-}
+, d_id(original.d_id){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-ClusterNode::ClusterNode(ClusterNode&& original) noexcept
+ClusterNode::ClusterNode(ClusterNode && original) noexcept
 : d_name(bsl::move(original.d_name)),
   d_dataCenter(bsl::move(original.d_dataCenter)),
   d_transport(bsl::move(original.d_transport)),
@@ -4264,13 +4257,11 @@ NetworkInterfaces::NetworkInterfaces(bslma::Allocator* basicAllocator)
 NetworkInterfaces::NetworkInterfaces(const NetworkInterfaces& original,
                                      bslma::Allocator*        basicAllocator)
 : d_tcpInterface(original.d_tcpInterface, basicAllocator)
-, d_heartbeats(original.d_heartbeats)
-{
-}
+, d_heartbeats(original.d_heartbeats){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-NetworkInterfaces::NetworkInterfaces(NetworkInterfaces&& original) noexcept
+NetworkInterfaces::NetworkInterfaces(NetworkInterfaces && original) noexcept
 : d_tcpInterface(bsl::move(original.d_tcpInterface)),
   d_heartbeats(bsl::move(original.d_heartbeats))
 {
@@ -4397,14 +4388,12 @@ ReversedClusterConnection::ReversedClusterConnection(
     const ReversedClusterConnection& original,
     bslma::Allocator*                basicAllocator)
 : d_connections(original.d_connections, basicAllocator)
-, d_name(original.d_name, basicAllocator)
-{
-}
+, d_name(original.d_name, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
 ReversedClusterConnection::ReversedClusterConnection(
-    ReversedClusterConnection&& original) noexcept
+    ReversedClusterConnection && original) noexcept
 : d_connections(bsl::move(original.d_connections)),
   d_name(bsl::move(original.d_name))
 {
@@ -4606,13 +4595,11 @@ StatPluginConfig::StatPluginConfig(const StatPluginConfig& original,
 , d_queueSize(original.d_queueSize)
 , d_queueHighWatermark(original.d_queueHighWatermark)
 , d_queueLowWatermark(original.d_queueLowWatermark)
-, d_publishInterval(original.d_publishInterval)
-{
-}
+, d_publishInterval(original.d_publishInterval){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-StatPluginConfig::StatPluginConfig(StatPluginConfig&& original) noexcept
+StatPluginConfig::StatPluginConfig(StatPluginConfig && original) noexcept
 : d_hosts(bsl::move(original.d_hosts)),
   d_name(bsl::move(original.d_name)),
   d_namespacePrefix(bsl::move(original.d_namespacePrefix)),
@@ -4787,13 +4774,11 @@ TaskConfig::TaskConfig(const TaskConfig& original,
                        bslma::Allocator* basicAllocator)
 : d_allocationLimit(original.d_allocationLimit)
 , d_logController(original.d_logController, basicAllocator)
-, d_allocatorType(original.d_allocatorType)
-{
-}
+, d_allocatorType(original.d_allocatorType){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-TaskConfig::TaskConfig(TaskConfig&& original) noexcept
+TaskConfig::TaskConfig(TaskConfig && original) noexcept
 : d_allocationLimit(bsl::move(original.d_allocationLimit)),
   d_logController(bsl::move(original.d_logController)),
   d_allocatorType(bsl::move(original.d_allocatorType))
@@ -4982,13 +4967,11 @@ ClusterDefinition::ClusterDefinition(const ClusterDefinition& original,
 , d_elector(original.d_elector)
 , d_clusterMonitorConfig(original.d_clusterMonitorConfig)
 , d_masterAssignment(original.d_masterAssignment)
-, d_clusterAttributes(original.d_clusterAttributes)
-{
-}
+, d_clusterAttributes(original.d_clusterAttributes){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-ClusterDefinition::ClusterDefinition(ClusterDefinition&& original) noexcept
+ClusterDefinition::ClusterDefinition(ClusterDefinition && original) noexcept
 : d_nodes(bsl::move(original.d_nodes)),
   d_name(bsl::move(original.d_name)),
   d_queueOperations(bsl::move(original.d_queueOperations)),
@@ -5183,14 +5166,12 @@ ClusterProxyDefinition::ClusterProxyDefinition(
 , d_name(original.d_name, basicAllocator)
 , d_queueOperations(original.d_queueOperations)
 , d_messageThrottleConfig(original.d_messageThrottleConfig)
-, d_clusterMonitorConfig(original.d_clusterMonitorConfig)
-{
-}
+, d_clusterMonitorConfig(original.d_clusterMonitorConfig){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-ClusterProxyDefinition::ClusterProxyDefinition(
-    ClusterProxyDefinition&& original) noexcept
+ClusterProxyDefinition::ClusterProxyDefinition(ClusterProxyDefinition &&
+                                               original) noexcept
 : d_nodes(bsl::move(original.d_nodes)),
   d_name(bsl::move(original.d_name)),
   d_queueOperations(bsl::move(original.d_queueOperations)),
@@ -5347,13 +5328,11 @@ StatsConfig::StatsConfig(const StatsConfig& original,
                          bslma::Allocator*  basicAllocator)
 : d_plugins(original.d_plugins, basicAllocator)
 , d_printer(original.d_printer, basicAllocator)
-, d_snapshotInterval(original.d_snapshotInterval)
-{
-}
+, d_snapshotInterval(original.d_snapshotInterval){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-StatsConfig::StatsConfig(StatsConfig&& original) noexcept
+StatsConfig::StatsConfig(StatsConfig && original) noexcept
 : d_plugins(bsl::move(original.d_plugins)),
   d_printer(bsl::move(original.d_printer)),
   d_snapshotInterval(bsl::move(original.d_snapshotInterval))
@@ -5644,13 +5623,11 @@ AppConfig::AppConfig(const AppConfig&  original,
 , d_routeCommandTimeoutMs(original.d_routeCommandTimeoutMs)
 , d_isRunningOnDev(original.d_isRunningOnDev)
 , d_configureStream(original.d_configureStream)
-, d_advertiseSubscriptions(original.d_advertiseSubscriptions)
-{
-}
+, d_advertiseSubscriptions(original.d_advertiseSubscriptions){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-AppConfig::AppConfig(AppConfig&& original) noexcept
+AppConfig::AppConfig(AppConfig && original) noexcept
 : d_brokerInstanceName(bsl::move(original.d_brokerInstanceName)),
   d_etcDir(bsl::move(original.d_etcDir)),
   d_hostName(bsl::move(original.d_hostName)),
@@ -5907,13 +5884,11 @@ ClustersDefinition::ClustersDefinition(const ClustersDefinition& original,
 , d_reversedClusterConnections(original.d_reversedClusterConnections,
                                basicAllocator)
 , d_proxyClusters(original.d_proxyClusters, basicAllocator)
-, d_myClusters(original.d_myClusters, basicAllocator)
-{
-}
+, d_myClusters(original.d_myClusters, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-ClustersDefinition::ClustersDefinition(ClustersDefinition&& original) noexcept
+ClustersDefinition::ClustersDefinition(ClustersDefinition && original) noexcept
 : d_myReverseClusters(bsl::move(original.d_myReverseClusters)),
   d_myVirtualClusters(bsl::move(original.d_myVirtualClusters)),
   d_reversedClusterConnections(
@@ -6060,13 +6035,11 @@ Configuration::Configuration(bslma::Allocator* basicAllocator)
 Configuration::Configuration(const Configuration& original,
                              bslma::Allocator*    basicAllocator)
 : d_taskConfig(original.d_taskConfig, basicAllocator)
-, d_appConfig(original.d_appConfig, basicAllocator)
-{
-}
+, d_appConfig(original.d_appConfig, basicAllocator){}
 
 #if defined(BSLS_COMPILERFEATURES_SUPPORT_RVALUE_REFERENCES) &&               \
     defined(BSLS_COMPILERFEATURES_SUPPORT_NOEXCEPT)
-Configuration::Configuration(Configuration&& original) noexcept
+Configuration::Configuration(Configuration && original) noexcept
 : d_taskConfig(bsl::move(original.d_taskConfig)),
   d_appConfig(bsl::move(original.d_appConfig))
 {
@@ -6131,6 +6104,7 @@ Configuration::print(bsl::ostream& stream, int level, int spacesPerLevel) const
 }  // close package namespace
 }  // close enterprise namespace
 
-// GENERATED BY BLP_BAS_CODEGEN_2024.10.17
+// GENERATED BY @BLP_BAS_CODEGEN_VERSION@
 // USING bas_codegen.pl -m msg --noAggregateConversion --noExternalization
 // --noIdent --package mqbcfg --msgComponent messages mqbcfg.xsd
+// ----------------------------------------------------------------------------
