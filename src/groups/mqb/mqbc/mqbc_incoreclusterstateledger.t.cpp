@@ -422,7 +422,8 @@ struct Tester {
                 if (!citer->second->waitFor(number)) {
                     return false;  // RETURN
                 }
-                BSLS_ASSERT_OPT(citer->second->writeCalls().size() >= number);
+                BSLS_ASSERT_OPT(citer->second->writeCalls().size() >=
+                                static_cast<size_t>(number));
             }
             else {
                 BSLS_ASSERT_OPT((!citer->second->waitFor(1)));
@@ -454,7 +455,8 @@ struct Tester {
             if (!citer->second->waitFor(number)) {
                 return false;  // RETURN
             }
-            BSLS_ASSERT_OPT(citer->second->writeCalls().size() >= number);
+            BSLS_ASSERT_OPT(citer->second->writeCalls().size() >=
+                            static_cast<size_t>(number));
         }
 
         return true;
@@ -1641,19 +1643,21 @@ static void test11_persistanceAcrossRollover()
         qadvisory.queues().push_back(qinfo);
     }
 
-    bdlsb::MemOutStreamBuf osb;
-    balber::BerEncoder     encoder;
-    int                    rc = encoder.encode(&osb, qadvisory);
-    BSLS_ASSERT_OPT(rc == 0);
-
     // 1. Apply and commit enough advisories to trigger rollover
     size_t i = 0;
+    bool   hasUncommittedBeforeRollover = true;
     while (ledger->numLogs() == 1U) {
         tester.d_cluster_mp->_clusterData()
             ->electorInfo()
             .nextLeaderMessageSequence(&qadvisory.sequenceNumber());
 
         BMQTST_ASSERT_EQ(obj->apply(qadvisory), 0);
+
+        // If rollover triggers before the commit
+        if (ledger->numLogs() == 2U) {
+            hasUncommittedBeforeRollover = false;
+            break;  // BREAK
+        }
 
         // Receive a quorum of acks
         tester.receiveAck(obj, qadvisory.sequenceNumber(), 3);
@@ -1672,24 +1676,15 @@ static void test11_persistanceAcrossRollover()
     }
     BMQTST_ASSERT_EQ(ledger->numLogs(), 2U);
 
-    // Since our logic for determining the newest log compares the last
-    // modification times and its precision is only up to the second, we sleep
-    // for 1 second to make sure the logs are written 1 second apart.
-    sleep(1);
+    const bmqp_ctrlmsg::LeaderMessageSequence snapshotSeqNum =
+        tester.d_cluster_mp->_clusterData()
+            ->electorInfo()
+            .leaderMessageSequence();
 
-    // 2. Apply and commit some more advisories and "save" them in a list
+    // 2. Apply and commit some more advisories and "save" them in the list
+    // `lastAdvisories`
     bsl::vector<AdvisoryInfo> lastAdvisories(
         bmqtst::TestHelperUtil::allocator());
-
-    bmqp_ctrlmsg::ControlMessage advisoryToCauseRollover;
-    advisoryToCauseRollover.choice()
-        .makeClusterMessage()
-        .choice()
-        .makeQueueAssignmentAdvisory(qadvisory);
-    lastAdvisories.push_back(
-        AdvisoryInfo(advisoryToCauseRollover,
-                     qadvisory.sequenceNumber(),
-                     mqbc::ClusterStateRecordType::e_UPDATE));
 
     // Apply and commit 'PartitionPrimaryAdvisory'
     bmqp_ctrlmsg::PartitionPrimaryInfo pinfo;
@@ -1809,15 +1804,20 @@ static void test11_persistanceAcrossRollover()
     bslma::ManagedPtr<mqbc::ClusterStateLedgerIterator> cslIter =
         obj->getIterator();
 
-    // 5. Verify the snapshot and the last advisories
+    // 5. Verify the snapshot and `lastAdvisories`
     BMQTST_ASSERT_EQ(cslIter->next(), 0);
     BMQTST_ASSERT(cslIter->isValid());
+    if (hasUncommittedBeforeRollover) {
+        // Skip the uncommitted adviosry before the snapshot, if any
+        BMQTST_ASSERT_EQ(cslIter->next(), 0);
+        BMQTST_ASSERT(cslIter->isValid());
+    }
     verifyRecordHeader(*cslIter,
                        mqbc::ClusterStateRecordType::e_SNAPSHOT,
-                       qadvisory.sequenceNumber());
+                       snapshotSeqNum);
 
     bmqp_ctrlmsg::ClusterMessage snapshotMsg;
-    rc = cslIter->loadClusterMessage(&snapshotMsg);
+    int rc = cslIter->loadClusterMessage(&snapshotMsg);
     BMQTST_ASSERT_EQ(cslIter->loadClusterMessage(&snapshotMsg), 0);
     BMQTST_ASSERT(snapshotMsg.choice().isLeaderAdvisoryValue());
 
@@ -1827,6 +1827,11 @@ static void test11_persistanceAcrossRollover()
               snapshot.queues().end(),
               compareQueueInfo);
     BMQTST_ASSERT_EQ(snapshot.queues(), qadvisory.queues());
+
+    // The advisory which causes rollover is written to the new log after the
+    // snapshot, so we skip it before verifying `lastAdvisories`
+    BMQTST_ASSERT_EQ(cslIter->next(), 0);
+    BMQTST_ASSERT(cslIter->isValid());
 
     for (bsl::vector<AdvisoryInfo>::const_iterator cit =
              lastAdvisories.cbegin();
