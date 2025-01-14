@@ -283,6 +283,10 @@ int IncoreClusterStateLedger::onLogRolloverCb(const mqbu::StorageKey& oldLogId,
         }
     }
 
+    if (!isSelfLeader()) {
+        return rc_SUCCESS;  // RETURN
+    }
+
     // Populate cluster state snapshot
     bmqp_ctrlmsg::LeaderAdvisory leaderAdvisory;
     leaderAdvisory.sequenceNumber() = snapshotLSN;
@@ -341,24 +345,7 @@ int IncoreClusterStateLedger::onLogRolloverCb(const mqbu::StorageKey& oldLogId,
     }
 
     // Write snapshot into ledger
-    ClusterMessageInfo info;
-    info.d_clusterMessage.choice().makeLeaderAdvisory(leaderAdvisory);
-
-    bsl::shared_ptr<bdlbb::Blob> record = d_blobSpPool_p->getObject();
-    rc                                  = ClusterStateLedgerUtil::appendRecord(
-        record.get(),
-        info.d_clusterMessage,
-        leaderAdvisory.sequenceNumber(),
-        currentTime(),
-        ClusterStateRecordType::e_SNAPSHOT);
-    if (rc != 0) {
-        return 10 * rc + rc_CREATE_RECORD_FAILURE;  // RETURN
-    }
-
-    rc = d_ledger_mp->writeRecord(&(info.d_recordId),
-                                  *record,
-                                  bmqu::BlobPosition(),
-                                  record->length());
+    rc = apply(leaderAdvisory);
     if (rc != 0) {
         return 10 * rc + rc_WRITE_RECORD_FAILURE;  // RETURN
     }
