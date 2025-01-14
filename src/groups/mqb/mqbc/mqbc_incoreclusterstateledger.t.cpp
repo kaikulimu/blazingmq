@@ -1637,7 +1637,7 @@ static void test11_persistanceAcrossRolloverLeader()
     bmqp_ctrlmsg::PartitionPrimaryInfo pinfo;
     pinfo.primaryNodeId()  = mqbmock::Cluster::k_LEADER_NODE_ID;
     pinfo.partitionId()    = 1U;
-    pinfo.primaryLeaseId() = 1U;
+    pinfo.primaryLeaseId() = 2U;
 
     bmqp_ctrlmsg::ClusterMessage            pmAdvisoryMsg;
     bmqp_ctrlmsg::PartitionPrimaryAdvisory& pmAdvisory =
@@ -1700,10 +1700,10 @@ static void test11_persistanceAcrossRolloverLeader()
     bmqp_ctrlmsg::PartitionPrimaryInfo pinfo2;
     pinfo2.primaryNodeId()  = mqbmock::Cluster::k_LEADER_NODE_ID;
     pinfo2.partitionId()    = 2U;
-    pinfo2.primaryLeaseId() = 1U;
+    pinfo2.primaryLeaseId() = 2U;
 
     bmqp_ctrlmsg::QueueInfo qinfo2;
-    qinfo2.uri()         = "bmq://bmq.test.mmap.priority/q20";
+    qinfo2.uri()         = "bmq://bmq.test.mmap.priority/q02";
     qinfo2.partitionId() = 2U;
 
     mqbu::StorageKey key2(mqbu::StorageKey::BinaryRepresentation(), "12302");
@@ -1779,12 +1779,17 @@ static void test11_persistanceAcrossRolloverLeader()
             .makeQueueAssignmentAdvisory(qadvisory);
         BSLS_ASSERT_OPT(tester.numCommittedMessages() == i + 1);
         BSLS_ASSERT_OPT(tester.committedMessage(i) == expected);
-        BSLS_ASSERT_OPT(tester.hasBroadcastedMessages(2 * (i + 1) + 3));
+        BSLS_ASSERT_OPT((ledger->numLogs() == 2U)
+                            ? tester.hasBroadcastedMessages(2 * (i + 1) + 4)
+                            : tester.hasBroadcastedMessages(2 * (i + 1) + 3));
         BSLS_ASSERT_OPT(tester.broadcastedMessage(2 * i + 3) == expected);
 
         ++i;
     }
     BMQTST_ASSERT_EQ(ledger->numLogs(), 2U);
+
+    const int numBroadcastSoFar = hasUncommittedBeforeRollover ? 2 * i + 4
+                                                               : 2 * i + 5;
 
     const bmqp_ctrlmsg::LeaderMessageSequence snapshotSeqNum =
         tester.d_cluster_mp->_clusterData()
@@ -1806,8 +1811,8 @@ static void test11_persistanceAcrossRolloverLeader()
         .makeLeaderAdvisoryCommit(pmAdvisoryCommit);
     BSLS_ASSERT_OPT(tester.numCommittedMessages() == i + 1);
     BSLS_ASSERT_OPT(tester.committedMessage(i) == expectedPmAdvisory);
-    BSLS_ASSERT_OPT(tester.hasBroadcastedMessages(2 * (i + 1) + 3));
-    BSLS_ASSERT_OPT(tester.broadcastedMessage(2 * (i + 1) + 2) ==
+    BSLS_ASSERT_OPT(tester.hasBroadcastedMessages(numBroadcastSoFar + 1));
+    BSLS_ASSERT_OPT(tester.broadcastedMessage(numBroadcastSoFar) ==
                     pmAdvisoryCommitMessage);
 
     // 4. Apply and commit some more advisories and "save" them in a list,
@@ -1838,8 +1843,8 @@ static void test11_persistanceAcrossRolloverLeader()
         .makePartitionPrimaryAdvisory(pmAdvisory2);
     BMQTST_ASSERT_EQ(tester.numCommittedMessages(), i + 2);
     BMQTST_ASSERT_EQ(tester.committedMessage(i + 1), expectedPmAdvisory2);
-    BMQTST_ASSERT(tester.hasBroadcastedMessages(2 * (i + 1) + 4));
-    BMQTST_ASSERT_EQ(tester.broadcastedMessage(2 * (i + 1) + 3),
+    BMQTST_ASSERT(tester.hasBroadcastedMessages(numBroadcastSoFar + 3));
+    BMQTST_ASSERT_EQ(tester.broadcastedMessage(numBroadcastSoFar + 1),
                      expectedPmAdvisory2);
 
     lastAdvisories.push_back(
@@ -1875,8 +1880,8 @@ static void test11_persistanceAcrossRolloverLeader()
     BMQTST_ASSERT_EQ(tester.numCommittedMessages(), i + 3);
     BMQTST_ASSERT_EQ(tester.committedMessage(i + 2),
                      expectedQUnassignedAdvisory2);
-    BMQTST_ASSERT(tester.hasBroadcastedMessages(2 * (i + 2) + 4));
-    BMQTST_ASSERT_EQ(tester.broadcastedMessage(2 * (i + 2) + 3),
+    BMQTST_ASSERT(tester.hasBroadcastedMessages(numBroadcastSoFar + 5));
+    BMQTST_ASSERT_EQ(tester.broadcastedMessage(numBroadcastSoFar + 3),
                      expectedQUnassignedAdvisory2);
 
     lastAdvisories.push_back(
@@ -1916,8 +1921,8 @@ static void test11_persistanceAcrossRolloverLeader()
         .makeLeaderAdvisory(leaderAdvisory2);
     BMQTST_ASSERT_EQ(tester.numCommittedMessages(), i + 4);
     BMQTST_ASSERT_EQ(tester.committedMessage(i + 3), expectedLeaderAdvisory2);
-    BMQTST_ASSERT(tester.hasBroadcastedMessages(2 * (i + 3) + 4));
-    BMQTST_ASSERT_EQ(tester.broadcastedMessage(2 * (i + 3) + 3),
+    BMQTST_ASSERT(tester.hasBroadcastedMessages(numBroadcastSoFar + 7));
+    BMQTST_ASSERT_EQ(tester.broadcastedMessage(numBroadcastSoFar + 5),
                      expectedLeaderAdvisory2);
 
     lastAdvisories.push_back(
@@ -2019,12 +2024,13 @@ static void test12_persistanceAcrossRolloverFollower()
 // Plan:
 //   1 Apply some advisory to remain uncommitted
 //   2 Apply and commit enough advisories to trigger rollover
-//   3 Apply and commit some more advisories and "save" them in a list,
+//   3 Commit one of the uncommitted advisories
+//   4 Apply and commit some more advisories and "save" them in a list,
 //     `lastAdvisories`
-//   4 Close the CSL
-//   5 Open the CSL and instantiate ClusterStateLedgerIterator.
-//   6 Verify the CSL now consists of uncommitted advisories, followed by the
-//     snapshot, followed by `lastAdvisories`
+//   5 Close the CSL
+//   6 Open the CSL and instantiate ClusterStateLedgerIterator
+//   7 Verify the CSL now consists of uncommitted advisories, then the snapshot
+//     , then one commit, then `lastAdvisories`
 //
 //  Testing:
 //    Rollover and persistence.
@@ -2091,7 +2097,7 @@ static void test12_persistanceAcrossRolloverFollower()
         .nextLeaderMessageSequence(&qUnassignedAdvisory.sequenceNumber());
 
     bmqp_ctrlmsg::QueueInfo qinfo;
-    qinfo.uri()         = "bmq://bmq.test.mmap.priority/q1";
+    qinfo.uri()         = "bmq://bmq.test.mmap.priority/q01";
     qinfo.partitionId() = 1U;
 
     mqbu::StorageKey key(mqbu::StorageKey::BinaryRepresentation(), "12301");
@@ -2131,7 +2137,7 @@ static void test12_persistanceAcrossRolloverFollower()
     pinfo2.primaryLeaseId() = 2U;
 
     bmqp_ctrlmsg::QueueInfo qinfo2;
-    qinfo2.uri()         = "bmq://bmq.test.mmap.priority/q2";
+    qinfo2.uri()         = "bmq://bmq.test.mmap.priority/q02";
     qinfo2.partitionId() = 2U;
 
     mqbu::StorageKey key2(mqbu::StorageKey::BinaryRepresentation(), "12302");
@@ -2174,9 +2180,9 @@ static void test12_persistanceAcrossRolloverFollower()
     // 2. Apply and commit enough advisories to trigger rollover
 
     // Build 'QueueAssignmentAdvisory'
-    bmqp_ctrlmsg::ClusterMessage           qAssignAdvisoryMsg;
-    bmqp_ctrlmsg::QueueAssignmentAdvisory& qAssignAdvisory =
-        qAssignAdvisoryMsg.choice().makeQueueAssignmentAdvisory();
+    bmqp_ctrlmsg::ClusterMessage           qadvisoryMsg;
+    bmqp_ctrlmsg::QueueAssignmentAdvisory& qadvisory =
+        qadvisoryMsg.choice().makeQueueAssignmentAdvisory();
     for (size_t i = 0; i < 50; ++i) {
         bmqu::MemOutStream uriStream(bmqtst::TestHelperUtil::allocator());
         uriStream << "bmq://bmq.test.mmap.priority/q" << i;
@@ -2189,37 +2195,49 @@ static void test12_persistanceAcrossRolloverFollower()
                                   bsl::to_string(12300 + i).c_str());
         queueKey.loadBinary(&queueInfo.key());
 
-        qAssignAdvisory.queues().push_back(queueInfo);
+        qadvisory.queues().push_back(queueInfo);
     }
 
     bmqp_ctrlmsg::ClusterMessage        commitMsg;
     bmqp_ctrlmsg::LeaderAdvisoryCommit& commit =
         commitMsg.choice().makeLeaderAdvisoryCommit();
 
-    // Repeatedly apply and commit above advisory, until rollover
+    // TODO Temp forced failure
+    BMQTST_ASSERT(false);
+    return;
+
     size_t i = 0;
+    bool   hasUncommittedBeforeRollover =
+        true;  // Either the qadvisory or its commit can trigger rollover.  If
+               // the commit triggers rollover, that means we have an
+               // uncomitted advisory before rollover.
     while (ledger->numLogs() == 1U) {
         tester.d_cluster_mp->_clusterData()
             ->electorInfo()
-            .nextLeaderMessageSequence(&qAssignAdvisory.sequenceNumber());
+            .nextLeaderMessageSequence(&qadvisory.sequenceNumber());
 
-        bdlbb::Blob qAssignAdvisoryEvent(tester.d_cluster_mp->_bufferFactory(),
-                                         bmqtst::TestHelperUtil::allocator());
-        tester.constructEventBlob(&qAssignAdvisoryEvent,
-                                  qAssignAdvisoryMsg,
-                                  qAssignAdvisory.sequenceNumber(),
+        bdlbb::Blob qadvisoryEvent(tester.d_cluster_mp->_bufferFactory(),
+                                   bmqtst::TestHelperUtil::allocator());
+        tester.constructEventBlob(&qadvisoryEvent,
+                                  qadvisoryMsg,
+                                  qadvisory.sequenceNumber(),
                                   123000 + (2 * i),
                                   mqbc::ClusterStateRecordType::e_UPDATE);
 
         BSLS_ASSERT_OPT(
-            obj->apply(qAssignAdvisoryEvent,
+            obj->apply(qadvisoryEvent,
                        tester.d_cluster_mp->netCluster().lookupNode(
                            mqbmock::Cluster::k_LEADER_NODE_ID)) == 0);
+
+        if (ledger->numLogs() == 2U) {
+            hasUncommittedBeforeRollover = false;
+            break;  // BREAK
+        }
 
         tester.d_cluster_mp->_clusterData()
             ->electorInfo()
             .nextLeaderMessageSequence(&commit.sequenceNumber());
-        commit.sequenceNumberCommitted() = qAssignAdvisory.sequenceNumber();
+        commit.sequenceNumberCommitted() = qadvisory.sequenceNumber();
 
         bdlbb::Blob commitEvent(tester.d_cluster_mp->_bufferFactory(),
                                 bmqtst::TestHelperUtil::allocator());
@@ -2238,19 +2256,18 @@ static void test12_persistanceAcrossRolloverFollower()
         expected.choice()
             .makeClusterMessage()
             .choice()
-            .makeQueueAssignmentAdvisory(qAssignAdvisory);
+            .makeQueueAssignmentAdvisory(qadvisory);
         BSLS_ASSERT_OPT(tester.numCommittedMessages() == i + 1);
         BSLS_ASSERT_OPT(tester.committedMessage(i) == expected);
         BSLS_ASSERT_OPT(tester.hasSentMessagesToLeader(i + 4));
 
         ++i;
+        // TODO rm
+        bsl::cerr << "zzl " << i;
+        if (i == 100)
+            break;
     }
     BMQTST_ASSERT_EQ(ledger->numLogs(), 2U);
-
-    // Since our logic for determining the newest log compares the last
-    // modification times and its precision is only up to the second, we sleep
-    // for 1 second to make sure the logs are written 1 second apart.
-    // TODO rm sleep(1);
 
     // 3. Apply and commit some more advisories and "save" them in a list,
     //    `lastAdvisories`
@@ -2261,72 +2278,73 @@ static void test12_persistanceAcrossRolloverFollower()
     // 5. Open the CSL and instantiate ClusterStateLedgerIterator.
     BSLS_ASSERT_OPT(obj->open() == 0);
 
-    bslma::ManagedPtr<mqbc::ClusterStateLedgerIterator> cslIter =
-        obj->getIterator();
+    // bslma::ManagedPtr<mqbc::ClusterStateLedgerIterator> cslIter =
+    //     obj->getIterator();
 
-    // 6. Verify the CSL now consists of uncommitted advisories, followed by
-    //    the snapshot, followed by `lastAdvisories`
-    int rc = 0;
-    for (bsl::vector<AdvisoryInfo>::const_iterator cit =
-             uncommittedAdvisories.cbegin();
-         cit != uncommittedAdvisories.cend();
-         ++cit) {
-        BMQTST_ASSERT_EQ(cslIter->next(), 0);
-        BMQTST_ASSERT(cslIter->isValid());
-        verifyRecordHeader(*cslIter, cit->d_recordType, cit->d_sequenceNumber);
+    // // 6. Verify the CSL now consists of uncommitted advisories, followed by
+    // //    the snapshot, followed by `lastAdvisories`
+    // int rc = 0;
+    // for (bsl::vector<AdvisoryInfo>::const_iterator cit =
+    //          uncommittedAdvisories.cbegin();
+    //      cit != uncommittedAdvisories.cend();
+    //      ++cit) {
+    //     BMQTST_ASSERT_EQ(cslIter->next(), 0);
+    //     BMQTST_ASSERT(cslIter->isValid());
+    //     verifyRecordHeader(*cslIter, cit->d_recordType,
+    //     cit->d_sequenceNumber);
 
-        bmqp_ctrlmsg::ClusterMessage msg;
-        rc = cslIter->loadClusterMessage(&msg);
-        BMQTST_ASSERT_EQ(rc, 0);
-        BMQTST_ASSERT(cit->d_advisory.choice().isClusterMessageValue());
-        BMQTST_ASSERT_EQ(msg, cit->d_advisory.choice().clusterMessage());
-    }
+    //     bmqp_ctrlmsg::ClusterMessage msg;
+    //     rc = cslIter->loadClusterMessage(&msg);
+    //     BMQTST_ASSERT_EQ(rc, 0);
+    //     BMQTST_ASSERT(cit->d_advisory.choice().isClusterMessageValue());
+    //     BMQTST_ASSERT_EQ(msg, cit->d_advisory.choice().clusterMessage());
+    // }
 
-    BMQTST_ASSERT_EQ(cslIter->next(), 0);
-    BMQTST_ASSERT(cslIter->isValid());
-    verifyRecordHeader(*cslIter,
-                       mqbc::ClusterStateRecordType::e_SNAPSHOT,
-                       qAssignAdvisory.sequenceNumber());
+    // BMQTST_ASSERT_EQ(cslIter->next(), 0);
+    // BMQTST_ASSERT(cslIter->isValid());
+    // verifyRecordHeader(*cslIter,
+    //                    mqbc::ClusterStateRecordType::e_SNAPSHOT,
+    //                    qadvisory.sequenceNumber());
 
-    bmqp_ctrlmsg::ClusterMessage snapshotMsg;
-    rc = cslIter->loadClusterMessage(&snapshotMsg);
-    BMQTST_ASSERT_EQ(cslIter->loadClusterMessage(&snapshotMsg), 0);
-    BMQTST_ASSERT(snapshotMsg.choice().isLeaderAdvisoryValue());
+    // bmqp_ctrlmsg::ClusterMessage snapshotMsg;
+    // rc = cslIter->loadClusterMessage(&snapshotMsg);
+    // BMQTST_ASSERT_EQ(cslIter->loadClusterMessage(&snapshotMsg), 0);
+    // BMQTST_ASSERT(snapshotMsg.choice().isLeaderAdvisoryValue());
 
-    bmqp_ctrlmsg::LeaderAdvisory& snapshot =
-        snapshotMsg.choice().leaderAdvisory();
-    bsl::sort(snapshot.queues().begin(),
-              snapshot.queues().end(),
-              compareQueueInfo);
-    BMQTST_ASSERT_EQ(snapshot.queues(), qAssignAdvisory.queues());
+    // bmqp_ctrlmsg::LeaderAdvisory& snapshot =
+    //     snapshotMsg.choice().leaderAdvisory();
+    // bsl::sort(snapshot.queues().begin(),
+    //           snapshot.queues().end(),
+    //           compareQueueInfo);
+    // BMQTST_ASSERT_EQ(snapshot.queues(), qadvisory.queues());
 
-    // Verify that the advisory to cause rollover is right after the snapshot
-    bmqp_ctrlmsg::ControlMessage advisoryToCauseRollover;
-    advisoryToCauseRollover.choice()
-        .makeClusterMessage()
-        .choice()
-        .makeQueueAssignmentAdvisory(qAssignAdvisory);
-    BMQTST_ASSERT_EQ(cslIter->next(), 0);
-    BMQTST_ASSERT(cslIter->isValid());
-    verifyRecordHeader(*cslIter,
-                       mqbc::ClusterStateRecordType::e_UPDATE,
-                       qAssignAdvisory.sequenceNumber());
+    // // Verify that the advisory to cause rollover is right after the
+    // snapshot bmqp_ctrlmsg::ControlMessage advisoryToCauseRollover;
+    // advisoryToCauseRollover.choice()
+    //     .makeClusterMessage()
+    //     .choice()
+    //     .makeQueueAssignmentAdvisory(qadvisory);
+    // BMQTST_ASSERT_EQ(cslIter->next(), 0);
+    // BMQTST_ASSERT(cslIter->isValid());
+    // verifyRecordHeader(*cslIter,
+    //                    mqbc::ClusterStateRecordType::e_UPDATE,
+    //                    qadvisory.sequenceNumber());
 
-    bmqp_ctrlmsg::ClusterMessage msg;
-    rc = cslIter->loadClusterMessage(&msg);
-    BMQTST_ASSERT_EQ(rc, 0);
-    BMQTST_ASSERT(msg.choice().isQueueAssignmentAdvisoryValue());
-    BMQTST_ASSERT_EQ(msg.choice().queueAssignmentAdvisory(), qAssignAdvisory);
+    // bmqp_ctrlmsg::ClusterMessage msg;
+    // rc = cslIter->loadClusterMessage(&msg);
+    // BMQTST_ASSERT_EQ(rc, 0);
+    // BMQTST_ASSERT(msg.choice().isQueueAssignmentAdvisoryValue());
+    // BMQTST_ASSERT_EQ(msg.choice().queueAssignmentAdvisory(), qadvisory);
 
-    BMQTST_ASSERT_EQ(cslIter->next(), 0);
-    BMQTST_ASSERT(cslIter->isValid());
-    verifyLeaderAdvisoryCommit(*cslIter, qAssignAdvisory.sequenceNumber());
+    // BMQTST_ASSERT_EQ(cslIter->next(), 0);
+    // BMQTST_ASSERT(cslIter->isValid());
+    // verifyLeaderAdvisoryCommit(*cslIter, qadvisory.sequenceNumber());
 
-    // Verify end of ledger
-    BMQTST_ASSERT_EQ(cslIter->next(), 1);
-    BMQTST_ASSERT(!cslIter->isValid());
+    // // Verify end of ledger
+    // BMQTST_ASSERT_EQ(cslIter->next(), 1);
+    // BMQTST_ASSERT(!cslIter->isValid());
 
-    BSLS_ASSERT_OPT(obj->close() == 0);
+    // BSLS_ASSERT_OPT(obj->close() == 0);
 }
 
 // ============================================================================
