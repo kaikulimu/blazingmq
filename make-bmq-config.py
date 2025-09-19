@@ -41,6 +41,17 @@ cluster = configurator.cluster(
     ],
 )
 cluster.priority_domain("bmq.test.mmap.priority")
+cluster.fanout_domain(
+    "bmq.test.mmap.fanout",
+    [
+        "app-id---01",
+        "app-id---02",
+        "app-id---03",
+        "app-id---04",
+        "app-id---05",
+        "app-id---06",
+    ],
+)
 configurator.broker(
     name="eastp",
     instance=str(next(instance)),
@@ -50,4 +61,6 @@ configurator.broker(
 ).proxy(cluster)
 
 for broker in configurator.brokers.values():
-    configurator.deploy(broker, LocalSite(f"/Users/yyan82/Desktop/tmp/bmq-config/{broker.name}"))
+    configurator.deploy(
+        broker, LocalSite(f"/Users/yyan82/Desktop/tmp/bmq-config/{broker.name}")
+    )
