@@ -44,6 +44,14 @@ cluster.priority_domain("bmq.test.mmap.priority")
 cluster.fanout_domain(
     "bmq.test.mmap.fanout",
     [
+        "foo",
+        "bar",
+        "baz",
+    ],
+)
+cluster.fanout_domain(
+    "bmq.test.mmap.fanout.longdomainname",
+    [
         "app-id---01",
         "app-id---02",
         "app-id---03",
