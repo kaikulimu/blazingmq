@@ -276,8 +276,6 @@ class PartitionStateTableActions {
 
     virtual void do_replicaDataRequestDrop(const ARGS& args) = 0;
 
-    virtual void do_replicaDataResponseDrop(const ARGS& args) = 0;
-
     virtual void do_replicaDataRequestPull(const ARGS& args) = 0;
 
     virtual void do_replicaDataResponsePull(const ARGS& args) = 0;
@@ -311,7 +309,8 @@ class PartitionStateTableActions {
 
     virtual void do_updateStorage(const ARGS& args) = 0;
 
-    virtual void do_removeStorage(const ARGS& args) = 0;
+    virtual void
+    do_removeStorageAndSendReplicaDataDropResponse(const ARGS& args) = 0;
 
     virtual void do_incrementNumRplcaDataRspn(const ARGS& args) = 0;
 
@@ -333,7 +332,8 @@ class PartitionStateTableActions {
 
     virtual void do_unsupportedPrimaryDowngrade(const ARGS& args) = 0;
 
-    void do_replicaDataResponseDrop_removeStorage_reapplyDetectSelfReplica(
+    void
+    do_removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica(
         const ARGS& args);
 
     void
@@ -665,10 +665,11 @@ class PartitionStateTable
                 REPLICA_DATA_RQST_PUSH,
                 setExpectedDataChunkRange_clearBufferedLiveData,
                 REPLICA_HEALING);
-        PST_CFG(REPLICA_HEALING,
-                REPLICA_DATA_RQST_DROP,
-                replicaDataResponseDrop_removeStorage_reapplyDetectSelfReplica,
-                REPLICA_HEALING);
+        PST_CFG(
+            REPLICA_HEALING,
+            REPLICA_DATA_RQST_DROP,
+            removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica,
+            REPLICA_HEALING);
         PST_CFG(REPLICA_HEALING,
                 RECOVERY_DATA,
                 updateStorage,
@@ -775,11 +776,10 @@ void PartitionStateTableActions<ARGS>::do_none(const ARGS& args)
 
 template <typename ARGS>
 void PartitionStateTableActions<ARGS>::
-    do_replicaDataResponseDrop_removeStorage_reapplyDetectSelfReplica(
+    do_removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica(
         const ARGS& args)
 {
-    do_replicaDataResponseDrop(args);
-    do_removeStorage(args);
+    do_removeStorageAndSendReplicaDataDropResponse(args);
     do_reapplyDetectSelfReplica(args);
 }
 
