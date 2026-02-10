@@ -147,7 +147,7 @@ void RecoveryManager::stop()
     // NOTHING
 }
 
-void RecoveryManager::deprecateFileSet(int partitionId)
+int RecoveryManager::deprecateFileSet(int partitionId)
 {
     // executed by the *QUEUE DISPATCHER* thread associated with 'partitionId'
 
@@ -155,6 +155,10 @@ void RecoveryManager::deprecateFileSet(int partitionId)
     BSLS_ASSERT_SAFE(partitionId >= 0 &&
                      partitionId <
                          d_clusterConfig.partitionConfig().numPartitions());
+
+    enum rcEnum { rc_SUCCESS = 0, rc_FAILURE = 1 };
+
+    int rcFinal = rc_SUCCESS;
 
     RecoveryContext&   recoveryCtx = d_recoveryContextVec[partitionId];
     bmqu::MemOutStream errorDesc;
@@ -171,6 +175,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << "], rc: " << rc << ", error: " << errorDesc.str()
                 << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -193,6 +198,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << "], rc: " << rc << ", error: " << errorDesc.str()
                 << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -210,6 +216,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << partitionId << "]: " << "Failed to close journal file ["
                 << recoveryCtx.d_recoveryFileSet.journalFile()
                 << "], rc: " << rc << BMQTSK_ALARMLOG_END;
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -229,6 +236,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
             << recoveryCtx.d_recoveryFileSet.journalFile() << "] "
             << "to location [" << d_dataStoreConfig.archiveLocation()
             << "] rc: " << rc << BMQTSK_ALARMLOG_END;
+        rcFinal = rc_FAILURE;
     }
     else {
         BALL_LOG_INFO << d_clusterData.identity().description()
@@ -251,6 +259,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << recoveryCtx.d_recoveryFileSet.dataFile() << "], rc: " << rc
                 << ", error: " << errorDesc.str() << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -271,6 +280,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << recoveryCtx.d_recoveryFileSet.dataFile() << "], rc: " << rc
                 << ", error: " << errorDesc.str() << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -288,6 +298,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << partitionId << "]: " << "Failed to close data file ["
                 << recoveryCtx.d_recoveryFileSet.dataFile() << "], rc: " << rc
                 << BMQTSK_ALARMLOG_END;
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -305,6 +316,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
             << recoveryCtx.d_recoveryFileSet.dataFile() << "] "
             << "to location [" << d_dataStoreConfig.archiveLocation()
             << "] rc: " << rc << BMQTSK_ALARMLOG_END;
+        rcFinal = rc_FAILURE;
     }
     else {
         BALL_LOG_INFO << d_clusterData.identity().description()
@@ -327,6 +339,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << recoveryCtx.d_recoveryFileSet.qlistFile() << "], rc: " << rc
                 << ", error: " << errorDesc.str() << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -347,6 +360,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << recoveryCtx.d_recoveryFileSet.qlistFile() << "], rc: " << rc
                 << ", error: " << errorDesc.str() << BMQTSK_ALARMLOG_END;
             errorDesc.reset();
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -364,6 +378,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
                 << partitionId << "]: " << "Failed to close QList file ["
                 << recoveryCtx.d_recoveryFileSet.qlistFile() << "], rc: " << rc
                 << BMQTSK_ALARMLOG_END;
+            rcFinal = rc_FAILURE;
         }
         else {
             BALL_LOG_INFO << d_clusterData.identity().description()
@@ -381,6 +396,7 @@ void RecoveryManager::deprecateFileSet(int partitionId)
             << recoveryCtx.d_recoveryFileSet.qlistFile() << "] "
             << "to location [" << d_dataStoreConfig.archiveLocation()
             << "] rc: " << rc << BMQTSK_ALARMLOG_END;
+        rcFinal = rc_FAILURE;
     }
     else {
         BALL_LOG_INFO << d_clusterData.identity().description()
@@ -393,6 +409,8 @@ void RecoveryManager::deprecateFileSet(int partitionId)
     recoveryCtx.d_qlistFilePosition = 0;
 
     recoveryCtx.d_firstSyncPointAfterRolloverSeqNum.reset();
+
+    return rcFinal;
 }
 
 void RecoveryManager::setExpectedDataChunkRange(

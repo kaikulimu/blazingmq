@@ -296,11 +296,6 @@ class PartitionStateTableActions {
 
     virtual void do_replicaDataRequestDrop(const ARGS& args) = 0;
 
-    virtual void do_replicaDataResponseDrop(const ARGS& args) = 0;
-
-    /// This method is called by replica to drop partition storage.
-    virtual void do_replicaRemoveStorage(const ARGS& args) = 0;
-
     virtual void do_replicaDataRequestPull(const ARGS& args) = 0;
 
     virtual void do_replicaDataResponsePull(const ARGS& args) = 0;
@@ -334,6 +329,9 @@ class PartitionStateTableActions {
 
     virtual void do_updateStorage(const ARGS& args) = 0;
 
+    virtual void
+    do_removeStorageAndSendReplicaDataDropResponse(const ARGS& args) = 0;
+
     virtual void do_incrementNumRplcaDataRspn(const ARGS& args) = 0;
 
     virtual void do_checkQuorumRplcaDataRspn(const ARGS& args) = 0;
@@ -355,7 +353,7 @@ class PartitionStateTableActions {
     virtual void do_unsupportedPrimaryDowngrade(const ARGS& args) = 0;
 
     void
-    do_replicaDataResponseDrop_replicaRemoveStorage_reapplyDetectSelfReplica(
+    do_removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica(
         const ARGS& args);
 
     void
@@ -707,7 +705,7 @@ class PartitionStateTable
         PST_CFG(
             REPLICA_HEALING,
             REPLICA_DATA_RQST_DROP,
-            replicaDataResponseDrop_replicaRemoveStorage_reapplyDetectSelfReplica,
+            removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica,
             REPLICA_HEALING);
         PST_CFG(REPLICA_HEALING,
                 RECOVERY_DATA,
@@ -818,11 +816,10 @@ void PartitionStateTableActions<ARGS>::do_none(const ARGS& args)
 
 template <typename ARGS>
 void PartitionStateTableActions<ARGS>::
-    do_replicaDataResponseDrop_replicaRemoveStorage_reapplyDetectSelfReplica(
+    do_removeStorageAndSendReplicaDataDropResponse_reapplyDetectSelfReplica(
         const ARGS& args)
 {
-    do_replicaDataResponseDrop(args);
-    do_replicaRemoveStorage(args);
+    do_removeStorageAndSendReplicaDataDropResponse(args);
     do_reapplyDetectSelfReplica(args);
 }
 
