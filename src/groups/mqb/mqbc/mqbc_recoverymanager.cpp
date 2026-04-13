@@ -61,7 +61,6 @@
 
 // BDE
 #include <bdlb_scopeexit.h>
-#include <bdlf_bind.h>
 #include <bdls_filesystemutil.h>
 #include <bsl_algorithm.h>
 
@@ -488,13 +487,12 @@ void RecoveryManager::resetReceiveDataCtx(int partitionId)
     d_recoveryContextVec[partitionId].d_receiveDataContext.reset();
 }
 
-void RecoveryManager::processSendDataChunks(
+int RecoveryManager::processSendDataChunks(
     int                                          partitionId,
     mqbnet::ClusterNode*                         destination,
     const bmqp_ctrlmsg::PartitionSequenceNumber& beginSeqNum,
     const bmqp_ctrlmsg::PartitionSequenceNumber& endSeqNum,
-    const mqbs::FileStore&                       fs,
-    PartitionDoneSendDataChunksCb                doneDataChunksCb)
+    const mqbs::FileStore&                       fs)
 {
     // executed by the *QUEUE DISPATCHER* thread associated with 'partitionId'
 
@@ -514,16 +512,8 @@ void RecoveryManager::processSendDataChunks(
         rc_INCOMPLETE_REPLAY        = -6
     };
 
-    int status = rc_SUCCESS;
-
-    bdlb::ScopeExitAny guardDoneDataChunks(
-        bdlf::BindUtil::bind(doneDataChunksCb,
-                             partitionId,
-                             destination,
-                             &status));
-
     if (beginSeqNum == endSeqNum) {
-        return;  // RETURN
+        return rc_SUCCESS;  // RETURN
     }
 
     BALL_LOG_INFO << d_clusterData.identity().description() << " Partition ["
@@ -557,8 +547,7 @@ void RecoveryManager::processSendDataChunks(
 
         mqbu::ExitUtil::terminate(mqbu::ExitCode::e_RECOVERY_FAILURE);  // EXIT
 
-        status = rc * 10 + rc_LOAD_FD_FAILURE;
-        return;  // RETURN
+        return rc * 10 + rc_LOAD_FD_FAILURE;  // RETURN
     }
 
     bsl::shared_ptr<bsls::AtomicInt> journalChunkDeleterCounter =
@@ -597,8 +586,7 @@ void RecoveryManager::processSendDataChunks(
 
         mqbu::ExitUtil::terminate(mqbu::ExitCode::e_RECOVERY_FAILURE);  // EXIT
 
-        status = rc * 10 + rc_JOURNAL_ITERATOR_FAILURE;
-        return;  // RETURN
+        return rc * 10 + rc_JOURNAL_ITERATOR_FAILURE;  // RETURN
     }
 
     // Make initial 'journalIt.nextRecord()' call
@@ -613,8 +601,7 @@ void RecoveryManager::processSendDataChunks(
 
         mqbu::ExitUtil::terminate(mqbu::ExitCode::e_RECOVERY_FAILURE);  // EXIT
 
-        status = rc * 10 + rc_JOURNAL_ITERATOR_FAILURE;
-        return;  // RETURN
+        return rc * 10 + rc_JOURNAL_ITERATOR_FAILURE;  // RETURN
     }
 
     bmqp_ctrlmsg::PartitionSequenceNumber currentSeqNum;
@@ -630,9 +617,7 @@ void RecoveryManager::processSendDataChunks(
             << ".  There is likely data gap between self and "
             << destination->nodeDescription() << "." << BMQTSK_ALARMLOG_END;
 
-        status = rc * 10 + rc_INVALID_SEQUENCE_NUMBER;
-
-        return;  // RETURN
+        return rc * 10 + rc_INVALID_SEQUENCE_NUMBER;  // RETURN
     }
 
     BALL_LOG_INFO << d_clusterData.identity().description() << " Partition ["
@@ -724,8 +709,8 @@ void RecoveryManager::processSendDataChunks(
                 << "While sending data chunks, failed to pack message, rc: "
                 << builderRc << "." << BMQTSK_ALARMLOG_END;
 
-            status = rc_BUILDER_FAILURE + 10 * static_cast<int>(builderRc);
-            return;  // RETURN
+            return rc_BUILDER_FAILURE +
+                   10 * static_cast<int>(builderRc);  // RETURN
         }
 
         if (d_clusterConfig.partitionConfig()
@@ -743,8 +728,8 @@ void RecoveryManager::processSendDataChunks(
                        "rc: "
                     << writeRc << ".";
 
-                status = static_cast<int>(writeRc) * 10 + rc_WRITE_FAILURE;
-                return;  // RETURN
+                return static_cast<int>(writeRc) * 10 +
+                       rc_WRITE_FAILURE;  // RETURN
             }
 
             builder.reset();
@@ -767,8 +752,7 @@ void RecoveryManager::processSendDataChunks(
                 mqbu::ExitUtil::terminate(
                     mqbu::ExitCode::e_RECOVERY_FAILURE);  // EXIT
 
-                status = rc * 10 + rc_INVALID_SEQUENCE_NUMBER;
-                return;  // RETURN
+                return rc * 10 + rc_INVALID_SEQUENCE_NUMBER;  // RETURN
             }
         }
     }
@@ -784,8 +768,7 @@ void RecoveryManager::processSendDataChunks(
             << ", was supposed to send up to: " << endSeqNum
             << ". Peer: " << destination->nodeDescription()
             << ".  Please review Partition FSM logic." << BMQTSK_ALARMLOG_END;
-        status = rc_INCOMPLETE_REPLAY;
-        return;  // RETURN
+        return rc_INCOMPLETE_REPLAY;  // RETURN
     }
 
     if (0 < builder.messageCount()) {
@@ -801,8 +784,8 @@ void RecoveryManager::processSendDataChunks(
                    "rc: "
                 << writeRc << ".";
 
-            status = static_cast<int>(writeRc) * 10 + rc_WRITE_FAILURE;
-            return;  // RETURN
+            return static_cast<int>(writeRc) * 10 +
+                   rc_WRITE_FAILURE;  // RETURN
         }
     }
 
@@ -810,7 +793,8 @@ void RecoveryManager::processSendDataChunks(
                   << partitionId << "]: " << "Sent data chunks from "
                   << beginSeqNum << " to " << endSeqNum
                   << " to node: " << destination->nodeDescription() << ".";
-    BSLS_ASSERT_SAFE(status == rc_SUCCESS);
+
+    return rc_SUCCESS;
 }
 
 int RecoveryManager::processReceiveDataChunks(
