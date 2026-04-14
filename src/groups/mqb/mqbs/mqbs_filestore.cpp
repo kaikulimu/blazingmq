@@ -6356,6 +6356,10 @@ void FileStore::processStorageEvent(const bsl::shared_ptr<bdlbb::Blob>& blob,
                 // get a separate notification about leaseId (unlike in steady
                 // state when StorageMgr invokes fs.setActivePrimary()).
 
+                if (d_primaryLeaseId > 0 &&
+                    recHeader->primaryLeaseId() > d_primaryLeaseId) {
+                    d_highestSeqNums[d_primaryLeaseId] = d_sequenceNum;
+                }
                 d_primaryLeaseId = recHeader->primaryLeaseId();
 
                 BALL_LOG_INFO
@@ -6483,6 +6487,9 @@ int FileStore::processRecoveryEvent(const bsl::shared_ptr<bdlbb::Blob>& blob)
             else if (d_primaryLeaseId < recHeader->primaryLeaseId()) {
                 // LeaseId was bumped up.
 
+                if (d_primaryLeaseId > 0) {
+                    d_highestSeqNums[d_primaryLeaseId] = d_sequenceNum;
+                }
                 d_primaryLeaseId = recHeader->primaryLeaseId();
                 d_sequenceNum    = recHeader->sequenceNumber();
             }
@@ -6749,8 +6756,11 @@ void FileStore::setActivePrimary(mqbnet::ClusterNode* primaryNode,
     }
 
     if (primaryLeaseId > d_primaryLeaseId) {
-        // Reset the sequence number only if primary leaseId has been bumped
-        // up.
+        // Record the highest sequence number for the previous primary lease id
+        // before bumping.
+        if (d_primaryLeaseId > 0) {
+            d_highestSeqNums[d_primaryLeaseId] = d_sequenceNum;
+        }
 
         d_sequenceNum = 0;
     }
