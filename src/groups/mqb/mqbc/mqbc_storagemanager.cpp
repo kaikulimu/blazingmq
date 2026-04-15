@@ -3262,7 +3262,6 @@ void StorageManager::do_removeStorageAndSendReplicaDataDropResponse(
 
     bool deprecateSuccess = false;
     if (fs->isOpen()) {
-        fs->close(false);  // flush
         if (0 == fs->deprecateFileSet()) {
             deprecateSuccess = true;
         }
