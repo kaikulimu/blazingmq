@@ -39,7 +39,7 @@ AuthnCredential::AuthnCredential(bslma::Allocator* allocator)
     // NOTHING
 }
 
-AuthnCredential::AuthnCredential(const bsl::string&       mechanism,
+AuthnCredential::AuthnCredential(bsl::string_view         mechanism,
                                  const bsl::vector<char>& data,
                                  bslma::Allocator*        allocator)
 : d_mechanism(mechanism, allocator)
@@ -93,20 +93,6 @@ AuthnCredential::operator=(bslmf::MovableRef<AuthnCredential> rhsRef)
 AuthnCredential::~AuthnCredential()
 {
     // NOTHING
-}
-
-// MANIPULATORS
-
-AuthnCredential& AuthnCredential::setMechanism(const bsl::string& mechanism)
-{
-    d_mechanism = mechanism;
-    return *this;
-}
-
-AuthnCredential& AuthnCredential::setData(const bsl::vector<char>& data)
-{
-    d_data = data;
-    return *this;
 }
 
 // ACCESSORS
