@@ -48,6 +48,14 @@ var classBloombergLP_1_1bmqt_1_1SessionOptions =
     [ "k_BROKER_DEFAULT_PORT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#ab58cccb280d4c12151bdc1dfbc8a8559", null ],
     [ "k_QUEUE_OPERATION_DEFAULT_TIMEOUT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a8cc1f347fab4f8fce9b4405c84ccb9d7", null ],
     [ "k_CHANNEL_WRITE_DEFAULT_TIMEOUT_SEC", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a926a6951e3eae92524412709f6123807", null ],
+    [ "k_NUM_PROCESSING_THREADS_DEFAULT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#ac8a91de3de0c803a14682c854031132f", null ],
+    [ "k_BLOB_BUFFER_DEFAULT_SIZE", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a17871621c538802e65633efd02a23da6", null ],
+    [ "k_CHANNEL_HIGH_WATERMARK_DEFAULT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a1bfe925217e5e852f0317ea7145a50a8", null ],
+    [ "k_STATS_DUMP_DEFAULT_INTERVAL_SEC", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a0477ca4d31a29b3474bd57448503e15c", null ],
+    [ "k_CONNECT_DEFAULT_TIMEOUT_SEC", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a506feb00677fc571db8ef06e1f822809", null ],
+    [ "k_DISCONNECT_DEFAULT_TIMEOUT_SEC", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#ae369809c6c931d5c7b7701469e38c410", null ],
+    [ "k_EVENT_QUEUE_LOW_WATERMARK_DEFAULT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a11f9d3d71e18482baa290edfbfc6b18b", null ],
+    [ "k_EVENT_QUEUE_HIGH_WATERMARK_DEFAULT", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a5a6c5c67d77d45fd0734190def0ce22e", null ],
     [ "lowWatermark", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#ad9ce850234682cd9338cb43f88cc3259", null ],
     [ "highWatermark", "classBloombergLP_1_1bmqt_1_1SessionOptions.html#a2a73eb47860ae4a75399f269ad7fb11b", null ]
 ];

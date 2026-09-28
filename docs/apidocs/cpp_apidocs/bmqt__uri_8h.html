@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libbmq<span id="projectnumber">&#160;7fcc7131ea9ef7323e633e692aa1944c8176b716</span>
+   <div id="projectname">libbmq<span id="projectnumber">&#160;bcffc528624a7a8d08f7c267d033d9bc23794282</span>
    </div>
   </td>
  </tr>
@@ -156,7 +156,7 @@ URI format</h1>
 </div><!-- fragment --><p>where:</p>
 <ul>
 <li>The URI scheme is always "bmq".</li>
-<li>The URI authority is the name of BlazingMQ domain (such as "ts.trades.myapp") as registered with the BlazingMQ infrastructure. The domain name may contain alphanumeric characters, dots and dashes (it has to match the following regular expression: <code>[-a-zA-Z0-9\\._]+</code>). The domain may be followed by an optional tier, introduced by the ".~" sequence and consisting of alphanumeric characters and dashes. The ".~" sequence is not part of the tier.</li>
+<li>The URI authority is the name of BlazingMQ domain (such as "ts.trades.myapp") as registered with the BlazingMQ infrastructure. The domain name may contain alphanumeric characters, dots, dashes, and underscores (each character must match <code>[-a-zA-Z0-9\\._]</code>) and must not contain consecutive dots. The domain may be followed by an optional tier, introduced by the ".~" sequence and consisting of alphanumeric characters and dashes. The ".~" sequence is not part of the tier.</li>
 <li>The URI path is the name of the queue ("my.queue" above) and may contain alphanumeric characters, dashes, underscores and tild (it has to match the following regular expression: <code>[-a-zA-Z0-9_~\\.]+</code>). The queue name must be less than <a class="el" href="classBloombergLP_1_1bmqt_1_1Uri.html#a6983f1d469602e6c19668797e44eb9dc">bmqt::Uri::k_QUEUENAME_MAX_LENGTH</a> characters long.</li>
 <li>The name of the queue ("my.queue" above) may contain alphanumeric characters and dots.</li>
 <li>The URI may contain an optional query with a key-value pair. Currently supported keys are:<ul>

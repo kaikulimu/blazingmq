@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libbmq<span id="projectnumber">&#160;7fcc7131ea9ef7323e633e692aa1944c8176b716</span>
+   <div id="projectname">libbmq<span id="projectnumber">&#160;bcffc528624a7a8d08f7c267d033d9bc23794282</span>
    </div>
   </td>
  </tr>
@@ -146,6 +146,8 @@ Functions</h2></td></tr>
 </ul>
 </li>
 <li><em>QUEUE_RESUMED</em>: Indicates that a suspended queue has resumed normal operation (i.e., effects of <code>QUEUE_SUSPENDED</code> state no longer apply).</li>
+<li><em>CHANNEL_HIGH_WATERMARK</em>: Notifies that the outbound TCP channel to the broker has become non-writable because its write buffer has reached the <a class="el" href="classBloombergLP_1_1bmqt_1_1SessionOptions.html">bmqt::SessionOptions</a> <code>channelHighWatermark</code>. Calls to <code>post</code>, <code>confirmMessages</code>, etc. may block (up to <code>channelWriteTimeout</code>) or fail until the channel drains.</li>
+<li><em>CHANNEL_LOW_WATERMARK</em>: Notifies that the outbound TCP channel to the broker has drained below its high watermark and is writable again, following a <code>CHANNEL_HIGH_WATERMARK</code> event.</li>
 <li><em>ERROR</em>: Indicates a generic error.</li>
 <li><em>TIMEOUT</em> Indicates that the specified operation has timed out.</li>
 <li><em>CANCELED</em>: Indicates that the specified operation was canceled. </li>
