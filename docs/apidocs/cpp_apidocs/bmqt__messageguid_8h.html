@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libbmq<span id="projectnumber">&#160;bcffc528624a7a8d08f7c267d033d9bc23794282</span>
+   <div id="projectname">libbmq<span id="projectnumber">&#160;4d9da8787a2718ace24453bc7d4aa2d3d49c993e</span>
    </div>
   </td>
  </tr>
@@ -147,6 +147,9 @@ Functions</h2></td></tr>
 <h1><a class="anchor" id="bmqt_messageguid_externalization"></a>
 Externalization</h1>
 <p>For convenience, this class provides <code>toHex</code> method that can be used to externalize a <a class="el" href="classBloombergLP_1_1bmqt_1_1MessageGUID.html">bmqt::MessageGUID</a> instance. Applications can persist the resultant buffer (on filesystem, in database) to keep track of last processed message ID across task instantiations. <code>fromHex</code> method can be used to convert a valid externalized buffer back to a message ID.</p>
+<h1><a class="anchor" id="bmqt_messageguid_format"></a>
+Format</h1>
+<p>Despite the name, <code>bmqt::MessageGUID</code> is <b>not</b> an RFC 4122 UUID/GUID: no version or variant bits per that standard are set, and its 16 bytes should not be interpreted or generated using RFC 4122 tooling. Instead, BlazingMQ packs a monotonic counter, a timer tick (nanoseconds since generator construction, to allow recovering a GUID's approximate creation time), and a hash derived from host/process identity. See bmqp::MessageGUIDGenerator for the exact bit layout.</p>
 <h1><a class="anchor" id="bmqt_messageguid_efficient"></a>
 Efficient comparison and hash function</h1>
 <p>This component also provides efficient comparison and hash functions for convenience, and thus, applications can use this component as a key in associative containers.</p>
