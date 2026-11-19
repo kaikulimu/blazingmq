@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a6af0f142ee41ebaa05cc7725e0702777":[1,0,0,1,17,0,0],
+"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a87bd2a0331dcf070057357ecf4005506":[0,0,0,1,17,0,12],
+"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a87bd2a0331dcf070057357ecf4005506":[1,0,0,1,17,0,12],
+"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a906f5ec4caf549050b172bfcf1d6a02a":[0,0,0,1,17,0,4],
 "structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a906f5ec4caf549050b172bfcf1d6a02a":[1,0,0,1,17,0,4],
 "structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620aabf6cbb9cc668176931dfe7b4757b63f":[0,0,0,1,17,0,9],
 "structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620aabf6cbb9cc668176931dfe7b4757b63f":[1,0,0,1,17,0,9],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#a84772be4a954cff3dbc159d56e136ae8":[1,0,0,1,15,2],
 "structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#a899dbe6eb3c04f3de1092d713e9910c5":[0,0,0,1,15,3],
 "structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#a899dbe6eb3c04f3de1092d713e9910c5":[1,0,0,1,15,3],
-"structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#ab48c57c4f00a81dabc8031682f7275f0":[0,0,0,1,15,1],
-"structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#ab48c57c4f00a81dabc8031682f7275f0":[1,0,0,1,15,1],
-"structBloombergLP_1_1bmqt_1_1PostResult.html":[0,0,0,1,20],
-"structBloombergLP_1_1bmqt_1_1PostResult.html":[1,0,0,1,20],
-"structBloombergLP_1_1bmqt_1_1PostResult.html#a39956f8ec25e90758c07100175652c0e":[0,0,0,1,20,2]
+"structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#ab48c57c4f00a81dabc8031682f7275f0":[0,0,0,1,15,1]
 };

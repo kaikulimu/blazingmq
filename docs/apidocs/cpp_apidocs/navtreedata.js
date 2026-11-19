@@ -61,10 +61,10 @@ var NAVTREEINDEX =
 "classBloombergLP_1_1bmqa_1_1Message.html#a817ae8399824f913f4c4200bd6bd5d4e",
 "classBloombergLP_1_1bmqa_1_1MockSession.html#a58aa0130c0ef56c208688172478a8cca",
 "classBloombergLP_1_1bmqpi_1_1DTSpan_1_1Baggage.html",
-"classBloombergLP_1_1bmqt_1_1SessionOptions.html#a406d1f9a2e777d52715e2ebd1079e41f",
-"classBloombergLP_1_1bmqt_1_1Version.html#ad618525b1714a429a5a5b72a94b1e62a",
-"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a906f5ec4caf549050b172bfcf1d6a02a",
-"structBloombergLP_1_1bmqt_1_1PostResult.html#a39956f8ec25e90758c07100175652c0e"
+"classBloombergLP_1_1bmqt_1_1SessionOptions.html#a4286f0d9df8bc0ffa3232c15f75e19ce",
+"classBloombergLP_1_1bmqt_1_1Version.html#aa9b24b15cd549c928510f0e57059b6f3",
+"structBloombergLP_1_1bmqt_1_1CloseQueueResult.html#a8a5f62a265c19e07a6f061c26ae47620a6af0f142ee41ebaa05cc7725e0702777",
+"structBloombergLP_1_1bmqt_1_1OpenQueueResult.html#ab48c57c4f00a81dabc8031682f7275f0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

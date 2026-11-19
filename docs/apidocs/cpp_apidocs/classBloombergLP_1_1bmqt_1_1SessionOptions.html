@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libbmq<span id="projectnumber">&#160;4d45b91e01b5a918ad4cef5465f6e89086d76dcc</span>
+   <div id="projectname">libbmq<span id="projectnumber">&#160;953d48ca5c506e30021800a26b3e893aeda0e1ae</span>
    </div>
   </td>
  </tr>
@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aec1cd229bdfe8c073ca14795a83dd506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of processing threads to the specified <span class="tt">value</span>.  <br /></td></tr>
 <tr class="memitem:affa6f60eeaf0f873ad29fa6e3561e67a" id="r_affa6f60eeaf0f873ad29fa6e3561e67a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affa6f60eeaf0f873ad29fa6e3561e67a">setBlobBufferSize</a> (int value)</td></tr>
 <tr class="memdesc:affa6f60eeaf0f873ad29fa6e3561e67a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the specified <span class="tt">value</span> for the size of blobs buffers.  <br /></td></tr>
-<tr class="memitem:a0ee20788e9cd4b2df5daa0f723376b22" id="r_a0ee20788e9cd4b2df5daa0f723376b22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ee20788e9cd4b2df5daa0f723376b22">setChannelHighWatermark</a> (bsls::Types::Int64 value)</td></tr>
+<tr class="memitem:a57e3457abb80cd353b2556572b8e5d59" id="r_a57e3457abb80cd353b2556572b8e5d59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2b849d83465d7684a087cb10a05224e8">BSLS_DEPRECATE_FEATURE</a>(&quot;bmqt&quot;, &quot;setChannelHighWatermark&quot;, &quot;Use setChannelWatermark(bsls::Types::Int64 &quot; &quot;<a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a>, bsls::Types::Int64 <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a>) &quot; &quot;instead.&quot;) <a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;setChannelHighWatermark(bsls <a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57e3457abb80cd353b2556572b8e5d59">setChannelWatermark</a> (bsls::Types::Int64 <a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a>, bsls::Types::Int64 <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a>)</td></tr>
 <tr class="memitem:aca25329ebb998ba34ec0fefe253621a2" id="r_aca25329ebb998ba34ec0fefe253621a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca25329ebb998ba34ec0fefe253621a2">setStatsDumpInterval</a> (const bsls::TimeInterval &amp;value)</td></tr>
 <tr class="memitem:ab93d971ed89dbfe106f892062f4c0158" id="r_ab93d971ed89dbfe106f892062f4c0158"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab93d971ed89dbfe106f892062f4c0158">setConnectTimeout</a> (const bsls::TimeInterval &amp;value)</td></tr>
 <tr class="memdesc:ab93d971ed89dbfe106f892062f4c0158"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the timeout for connecting to the broker to the specified <span class="tt">value</span>.  <br /></td></tr>
@@ -139,6 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a475508e5b46d2a1b3bd0db6abd54211b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of processing threads.  <br /></td></tr>
 <tr class="memitem:a59ab634cadc75387952ccf432e2b9042" id="r_a59ab634cadc75387952ccf432e2b9042"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59ab634cadc75387952ccf432e2b9042">blobBufferSize</a> () const</td></tr>
 <tr class="memdesc:a59ab634cadc75387952ccf432e2b9042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the blobs buffer.  <br /></td></tr>
+<tr class="memitem:a90e65df5f9257a818fd86f7aeeeef4c3" id="r_a90e65df5f9257a818fd86f7aeeeef4c3"><td class="memItemLeft" align="right" valign="top">bsls::Types::Int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90e65df5f9257a818fd86f7aeeeef4c3">channelLowWatermark</a> () const</td></tr>
+<tr class="memdesc:a90e65df5f9257a818fd86f7aeeeef4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the channel low watermark.  <br /></td></tr>
 <tr class="memitem:a1a302481fe86dfacd1a3b851c9c5edfc" id="r_a1a302481fe86dfacd1a3b851c9c5edfc"><td class="memItemLeft" align="right" valign="top">bsls::Types::Int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a302481fe86dfacd1a3b851c9c5edfc">channelHighWatermark</a> () const</td></tr>
 <tr class="memdesc:a1a302481fe86dfacd1a3b851c9c5edfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the channel high watermark.  <br /></td></tr>
 <tr class="memitem:aa4a40638a35d82b9001d93d2dd33cbde" id="r_aa4a40638a35d82b9001d93d2dd33cbde"><td class="memItemLeft" align="right" valign="top">const bsls::TimeInterval &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4a40638a35d82b9001d93d2dd33cbde">statsDumpInterval</a> () const</td></tr>
@@ -186,6 +188,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:ac8a91de3de0c803a14682c854031132f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default number of threads used for processing events.  <br /></td></tr>
 <tr class="memitem:a17871621c538802e65633efd02a23da6" id="r_a17871621c538802e65633efd02a23da6"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17871621c538802e65633efd02a23da6">k_BLOB_BUFFER_DEFAULT_SIZE</a> = 4 * 1024</td></tr>
 <tr class="memdesc:a17871621c538802e65633efd02a23da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default size (in bytes) of the blob buffers to use.  <br /></td></tr>
+<tr class="memitem:aa52cd86b24ff0fc14b1d2319fa4d8a5e" id="r_aa52cd86b24ff0fc14b1d2319fa4d8a5e"><td class="memItemLeft" align="right" valign="top">static const bsls::Types::Int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa52cd86b24ff0fc14b1d2319fa4d8a5e">k_CHANNEL_LOW_WATERMARK_DEFAULT</a></td></tr>
+<tr class="memdesc:aa52cd86b24ff0fc14b1d2319fa4d8a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value (in bytes) for the channel write cache low watermark.  <br /></td></tr>
 <tr class="memitem:a1bfe925217e5e852f0317ea7145a50a8" id="r_a1bfe925217e5e852f0317ea7145a50a8"><td class="memItemLeft" align="right" valign="top">static const bsls::Types::Int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bfe925217e5e852f0317ea7145a50a8">k_CHANNEL_HIGH_WATERMARK_DEFAULT</a></td></tr>
 <tr class="memdesc:a1bfe925217e5e852f0317ea7145a50a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value (in bytes) for the channel write cache high watermark.  <br /></td></tr>
 <tr class="memitem:a0477ca4d31a29b3474bd57448503e15c" id="r_a0477ca4d31a29b3474bd57448503e15c"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0477ca4d31a29b3474bd57448503e15c">k_STATS_DUMP_DEFAULT_INTERVAL_SEC</a> = 5 * 60</td></tr>
@@ -287,7 +291,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions()</a>, <a class="el" href="#a2211af2d3ffd786dd5eb0f60774f9bf9">setAuthnCredentialCb()</a>, <a class="el" href="#affa6f60eeaf0f873ad29fa6e3561e67a">setBlobBufferSize()</a>, <a class="el" href="#a6d66d9b77fd96366f363c688766f6601">setBrokerUri()</a>, <a class="el" href="#a0ee20788e9cd4b2df5daa0f723376b22">setChannelHighWatermark()</a>, <a class="el" href="#a1fa26f48d062e50b6bc35f2e70ba61ad">setCloseQueueTimeout()</a>, <a class="el" href="#a406d1f9a2e777d52715e2ebd1079e41f">setConfigureQueueTimeout()</a>, <a class="el" href="#ab93d971ed89dbfe106f892062f4c0158">setConnectTimeout()</a>, <a class="el" href="#afc5169e076cc49ee5cae3486a3e51b6f">setDisconnectTimeout()</a>, <a class="el" href="#a79a67fc682dfab108308f4dca40cc06c">setHostHealthMonitor()</a>, <a class="el" href="#aec1cd229bdfe8c073ca14795a83dd506">setNumProcessingThreads()</a>, <a class="el" href="#a5b9bf86e49c8ed6ae8b454281f23d443">setOpenQueueTimeout()</a>, <a class="el" href="#a4773df83f2d86ee9d6261cb69a998d26">setProcessNameOverride()</a>, <a class="el" href="#aca25329ebb998ba34ec0fefe253621a2">setStatsDumpInterval()</a>, and <a class="el" href="#a6ee3200d8232342d13a55cf50ad3e34d">setTraceOptions()</a>.</p>
+<p class="reference">References <a class="el" href="#a2b849d83465d7684a087cb10a05224e8">BSLS_DEPRECATE_FEATURE()</a>, <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a>, <a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a>, <a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions()</a>, <a class="el" href="#a2211af2d3ffd786dd5eb0f60774f9bf9">setAuthnCredentialCb()</a>, <a class="el" href="#affa6f60eeaf0f873ad29fa6e3561e67a">setBlobBufferSize()</a>, <a class="el" href="#a6d66d9b77fd96366f363c688766f6601">setBrokerUri()</a>, <a class="el" href="#a57e3457abb80cd353b2556572b8e5d59">setChannelWatermark()</a>, <a class="el" href="#a1fa26f48d062e50b6bc35f2e70ba61ad">setCloseQueueTimeout()</a>, <a class="el" href="#a406d1f9a2e777d52715e2ebd1079e41f">setConfigureQueueTimeout()</a>, <a class="el" href="#ab93d971ed89dbfe106f892062f4c0158">setConnectTimeout()</a>, <a class="el" href="#afc5169e076cc49ee5cae3486a3e51b6f">setDisconnectTimeout()</a>, <a class="el" href="#a79a67fc682dfab108308f4dca40cc06c">setHostHealthMonitor()</a>, <a class="el" href="#aec1cd229bdfe8c073ca14795a83dd506">setNumProcessingThreads()</a>, <a class="el" href="#a5b9bf86e49c8ed6ae8b454281f23d443">setOpenQueueTimeout()</a>, <a class="el" href="#a4773df83f2d86ee9d6261cb69a998d26">setProcessNameOverride()</a>, <a class="el" href="#aca25329ebb998ba34ec0fefe253621a2">setStatsDumpInterval()</a>, and <a class="el" href="#a6ee3200d8232342d13a55cf50ad3e34d">setTraceOptions()</a>.</p>
 
 </div>
 </div>
@@ -426,8 +430,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0ee20788e9cd4b2df5daa0f723376b22" name="a0ee20788e9cd4b2df5daa0f723376b22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ee20788e9cd4b2df5daa0f723376b22">&#9670;&#160;</a></span>setChannelHighWatermark()</h2>
+<a id="a57e3457abb80cd353b2556572b8e5d59" name="a57e3457abb80cd353b2556572b8e5d59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57e3457abb80cd353b2556572b8e5d59">&#9670;&#160;</a></span>setChannelWatermark()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -436,10 +440,14 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp; BloombergLP::bmqt::SessionOptions::setChannelHighWatermark </td>
+          <td class="memname"><a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions</a> &amp; BloombergLP::bmqt::SessionOptions::setChannelWatermark </td>
           <td>(</td>
-          <td class="paramtype">bsls::Types::Int64</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td class="paramtype">bsls::Types::Int64</td>          <td class="paramname"><span class="paramname"><em>lowWatermark</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bsls::Types::Int64</td>          <td class="paramname"><span class="paramname"><em>highWatermark</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -448,7 +456,9 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the specified <span class="tt">value</span> (in bytes) for the channel high watermark. The behavior is undefined unless <span class="tt">8 * 1024 * 1024 &lt; value</span>. </p>
+<p>Set the specified <span class="tt">value</span> (in bytes) for the channel high watermark. The behavior is undefined unless <span class="tt">8 * 1024 * 1024 &lt; value</span> and <span class="tt"><a class="el" href="#a90e65df5f9257a818fd86f7aeeeef4c3" title="Get the channel low watermark.">channelLowWatermark()</a> &lt; value</span>. Set the channel low and high watermarks to the specified <span class="tt"><a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a></span> and <span class="tt"><a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a></span> values (in bytes), respectively. Refer to the component level documentation for an explanation of those watermarks. The behavior is undefined unless <span class="tt">0 &lt;= <a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a></span>, <span class="tt"><a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a> &lt; <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a></span>, and <span class="tt">8 * 1024 * 1024 &lt; <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a></span>. </p>
+
+<p class="reference">References <a class="el" href="#a2a73eb47860ae4a75399f269ad7fb11b">highWatermark</a>, and <a class="el" href="#ad9ce850234682cd9338cb43f88cc3259">lowWatermark</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a6764c5cb91952bfe1afbf8902203cc34">~SessionOptions()</a>.</p>
 
@@ -736,7 +746,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="#a2b849d83465d7684a087cb10a05224e8">BSLS_DEPRECATE_FEATURE()</a>, and <a class="el" href="#a255bd2874882db309fc98bdfcfa898a7">SessionOptions()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a2b849d83465d7684a087cb10a05224e8">BSLS_DEPRECATE_FEATURE()</a>, and <a class="el" href="#a60f796ef765ee8ed15300a10dbd5d86f">BSLS_DEPRECATE_FEATURE()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a2b849d83465d7684a087cb10a05224e8">BSLS_DEPRECATE_FEATURE()</a>, <a class="el" href="#a60f796ef765ee8ed15300a10dbd5d86f">BSLS_DEPRECATE_FEATURE()</a>, and <a class="el" href="#a6764c5cb91952bfe1afbf8902203cc34">~SessionOptions()</a>.</p>
 
 </div>
 </div>
@@ -930,6 +940,31 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="reference">Referenced by <a class="el" href="namespaceBloombergLP_1_1bmqt.html#a3cd71fd8e31a80980d1a2c73a2ee29ba">BloombergLP::bmqt::operator==()</a>.</p>
+
+</div>
+</div>
+<a id="a90e65df5f9257a818fd86f7aeeeef4c3" name="a90e65df5f9257a818fd86f7aeeeef4c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90e65df5f9257a818fd86f7aeeeef4c3">&#9670;&#160;</a></span>channelLowWatermark()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bsls::Types::Int64 BloombergLP::bmqt::SessionOptions::channelLowWatermark </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1529,6 +1564,30 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aa52cd86b24ff0fc14b1d2319fa4d8a5e" name="aa52cd86b24ff0fc14b1d2319fa4d8a5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa52cd86b24ff0fc14b1d2319fa4d8a5e">&#9670;&#160;</a></span>k_CHANNEL_LOW_WATERMARK_DEFAULT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bsls::Types::Int64 BloombergLP::bmqt::SessionOptions::k_CHANNEL_LOW_WATERMARK_DEFAULT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= 512 *</div>
+<div class="line">                                                                      1024</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a1bfe925217e5e852f0317ea7145a50a8" name="a1bfe925217e5e852f0317ea7145a50a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bfe925217e5e852f0317ea7145a50a8">&#9670;&#160;</a></span>k_CHANNEL_HIGH_WATERMARK_DEFAULT</h2>
 
@@ -1676,7 +1735,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5079adfe01673608087500302d85d701">configureEventQueue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a5079adfe01673608087500302d85d701">configureEventQueue()</a>, <a class="el" href="#a57e3457abb80cd353b2556572b8e5d59">setChannelWatermark()</a>, and <a class="el" href="#a6764c5cb91952bfe1afbf8902203cc34">~SessionOptions()</a>.</p>
 
 </div>
 </div>
@@ -1692,7 +1751,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5079adfe01673608087500302d85d701">configureEventQueue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a5079adfe01673608087500302d85d701">configureEventQueue()</a>, <a class="el" href="#a57e3457abb80cd353b2556572b8e5d59">setChannelWatermark()</a>, and <a class="el" href="#a6764c5cb91952bfe1afbf8902203cc34">~SessionOptions()</a>.</p>
 
 </div>
 </div>
